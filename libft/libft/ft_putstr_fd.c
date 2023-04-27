@@ -1,37 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcreus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/27 12:42:17 by mcreus            #+#    #+#             */
-/*   Updated: 2023/04/27 12:42:18 by mcreus           ###   ########.fr       */
+/*   Created: 2023/04/27 12:41:27 by mcreus            #+#    #+#             */
+/*   Updated: 2023/04/27 12:41:30 by mcreus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*The strdup() function returns a pointer to a new string which is
-       a duplicate of the string s.  Memory for the new string is
-       obtained with malloc(3).*/
+/* s: The string to output.
+fd: The file descriptor on which to write.
+Outputs the string ’s’ to the given file
+descriptor. */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s1)
+void	ft_putstr_fd(char *s, int fd)
 {
-	char	*s1_copy;
-	size_t	len;
-	size_t	i;
+	int	i;
 
-	len = ft_strlen(s1);
-	s1_copy = malloc((len + 1) * sizeof(char));
 	i = 0;
-	if (s1_copy == 0)
-		return (0);
-	while (i < len)
+	while (s[i] != '\0')
 	{
-		s1_copy[i] = s1[i];
+		write (fd, &s[i], 1);
 		i++;
 	}
-	s1_copy[i] = '\0';
-	return (s1_copy);
 }
+
+/*int	main()
+{
+	char c[] = "rafael";
+	char *p;
+	p=c;
+	int fd = 1;
+	
+	ft_putstr_fd(p, fd);
+}*/

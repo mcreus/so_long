@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcreus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/27 12:43:53 by mcreus            #+#    #+#             */
-/*   Updated: 2023/04/27 12:43:55 by mcreus           ###   ########.fr       */
+/*   Created: 2023/04/27 12:40:35 by mcreus            #+#    #+#             */
+/*   Updated: 2023/04/27 12:40:37 by mcreus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/* Outputs the character ’c’ to the given file
+descriptor
+c: The character to output.
+fd: The file descriptor on which to write */
+
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+void	ft_putchar_fd(char c, int fd)
 {
-	size_t	i;
-
-	i = 0;
-	if (!s)
-		return (i);
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	write (fd, &c, 1);
 }

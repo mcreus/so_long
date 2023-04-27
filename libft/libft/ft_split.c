@@ -3,68 +3,103 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asimon <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mcreus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/04 15:53:28 by asimon            #+#    #+#             */
-/*   Updated: 2023/04/04 15:37:05 by mcreus           ###   ########.fr       */
+/*   Created: 2023/04/27 12:41:50 by mcreus            #+#    #+#             */
+/*   Updated: 2023/04/27 12:41:52 by mcreus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+** LIBRARY: N/A
+** SYNOPSIS: split string, with specified character as delimiter, into an array
+**			of strings
+**
+** DESCRIPTION:
+** 		Allocates (with malloc(3)) and returns an array of strings obtained by
+**	splitting ’s’ using the character ’c’ as a delimiter. The array must be
+**	ended by a NULL pointer.
+*/
+
 #include "libft.h"
 
-static int	ft_charcpt(char *str, char chr)
+static int	word_count(const char *s, char c)
 {
-	int	i;
-	int	ret;
+	int	word;
+	int	count;
 
-	i = 0;
-	ret = 0;
-	while (str[i])
+	count = 0;
+	word = 0;
+	while (*s != '\0')
 	{
-		if (str[i] == chr)
-			ret++;
-		i++;
+		if (*s != c && count == 0)
+		{
+			word++;
+			count = 1;
+		}
+		else if (*s == c)
+		{
+			count = 0;
+		}
+		s++;
 	}
-	return (ret);
+	return (word);
 }
 
-static int	ft_strnchr(char *str, char sep)
+static int	letter_index(const char *s, char c, int a)
 {
-	int	i;
+	int	len;
 
-	i = 0;
-	while (str[i])
+	len = 0;
+	while (s[a] != c && s[a] != '\0')
 	{
-		if (str[i] == sep)
-			return (i);
-		i++;
+		a++;
+		len++;
 	}
-	return (i);
+	return (len);
 }
 
-char	**ft_split(char *str, char sep)
+char	**ft_split(char const *s, char c)
 {
-	int		i;
-	int		y;
-	int		cpt;
-	char	**ret;
+	size_t	word;
+	size_t	a;
+	size_t	b;
+	char	**str;
 
-	i = 0;
-	y = 0;
-	ret = (char **)malloc(sizeof(char *) * (ft_charcpt(str, sep) + 1));
-	if (ret == NULL)
+	a = 0;
+	b = 0;
+	if (!s)
 		return (NULL);
-	while (str[i])
+	word = word_count(s, c);
+	str = (char **)malloc(sizeof(char *) * (word + 1));
+	if (str == NULL)
+		return (NULL);
+	while (b < word)
 	{
-		cpt = ft_strnchr(&str[i], sep);
-		ret[y] = ft_strncpy(&str[i], cpt);
-		if (str[i + cpt] != '\0')
-			i += (cpt + 1);
-		else
-			i += cpt;
-		y++;
+		while (s[a] == c)
+			a++;
+		str[b] = ft_substr(s, a, (letter_index(s, c, a)));
+		if (!str)
+			return (NULL);
+		a += letter_index(s, c, a);
+		b++;
 	}
-	ret[y] = NULL;
-	free(str);
-	return (ret);
+	str[b] = 0;
+	return (str);
 }
+
+/* #include <stdio.h>
+
+int	main()
+{
+   char    str[] = "b sm d";
+   char **splited;
+   int     a;
+   a = 0;
+   splited = ft_split(str, ' ');
+   while (splited[a])
+   {
+      printf ("%s\n", splited[a]);
+      a++;
+   }
+} */

@@ -3,79 +3,101 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asimon <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mcreus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/13 18:50:26 by asimon            #+#    #+#             */
-/*   Updated: 2023/04/04 15:35:59 by mcreus           ###   ########.fr       */
+/*   Created: 2023/04/27 12:32:58 by mcreus            #+#    #+#             */
+/*   Updated: 2023/04/27 12:33:02 by mcreus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+ SYNOPSIS: split string, with specified character as delimiter, into an array
+of strings
+** DESCRIPTION:
+** 		Allocates (with malloc(3)) and returns an array of strings obtained by
+**	splitting ’s’ using the character ’c’ as a delimiter. The array must be
+**	ended by a NULL pointer.
+*/
 #include "libft.h"
 
-static char	*ft_count(int nb, int *size)
+static char	*posnum(char *str, int n, int len)
 {
-	char	*ret;
+	long	x;
 
-	*size = 1;
-	if (nb < 0 && nb != -2147483648)
+	len--;
+	x = n;
+	while (len >= 0)
 	{
-		nb = -nb;
-		(*size)++;
+		str[len] = x % 10 + '0';
+		x = x / 10;
+		len--;
 	}
-	else if (nb == -2147483648)
-	{
-		*size = 11;
-		ret = (char *)malloc(sizeof(char) * (*size + 1));
-		return (ret);
-	}
-	while (nb / 10 > 0)
-	{
-		nb /= 10;
-		*size += 1;
-	}
-	ret = (char *)malloc(sizeof(char) * (*size + 1));
-	return (ret);
+	return (str);
 }
 
-static char	*ft_insert(char *ret, int neg, int size, int n)
+static char	*negnum(char *str, int n, int len)
 {
-	while ((size > 0 && neg == 0) || (size > 1 && neg == 1))
+	long	x;
+
+	x = n;
+	str[0] = '-';
+	len--;
+	x = x * (-1);
+	while (len > 0)
 	{
-		ret[--size] = (n % 10 + 48);
-		n /= 10;
+		str[len] = (x % 10) + '0';
+		x = x / 10;
+		len--;
 	}
-	if (neg == 1)
+	return (str);
+}
+
+static int	int_len(int n)
+{
+	int		i;
+	long	x;
+
+	x = n;
+	i = 0;
+	if (x <= 0)
 	{
-		ret[size - 1] = '-';
+		x = x *(-1);
+		i++;
 	}
-	return (ret);
+	while (x > 0)
+	{
+		x = x / 10;
+		i++;
+	}
+	return (i);
 }
 
 char	*ft_itoa(int n)
 {
-	char	*ret;
-	int		neg;
-	int		size[2];
+	char	*str;
+	int		len;
 
-	neg = 0;
-	size[0] = 0;
-	ret = ft_count(n, &size[0]);
-	if (ret == NULL)
+	len = int_len(n);
+	str = (char *) malloc (sizeof (char) * len + 1);
+	if (!str)
 		return (NULL);
-	size[1] = size[0];
-	if (n < 0 && n != -2147483648)
+	str[len] = '\0';
+	if (n < 0)
 	{
-		n = -n;
-		neg = 1;
+		str = negnum(str, n, len);
 	}
-	else if (n == -2147483648)
-	{
-		ret[size[0] - 1] = '8';
-		n = (n / 10) * -1;
-		neg = 1;
-		size[1] -= 1;
-	}
-	ret = ft_insert(ret, neg, size[1], n);
-	ret[size[0]] = '\0';
-	return (ret);
+	else if (n == 0)
+		str[0] = '0';
+	else
+		str = posnum(str, n, len);
+	return (str);
 }
+
+/*#include <stdio.h>
+ int main()
+{
+	char *b;
+	b = ft_itoa(-2147483648);
+	printf("%s\n", b);
+	return 0;
+} */

@@ -3,36 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asimon <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mcreus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/12 22:53:47 by asimon            #+#    #+#             */
-/*   Updated: 2023/04/04 15:34:54 by mcreus           ###   ########.fr       */
+/*   Created: 2023/04/27 12:30:27 by mcreus            #+#    #+#             */
+/*   Updated: 2023/04/27 12:30:35 by mcreus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/* converte strings em números inteiros */
+
 #include "libft.h"
 
-long long int	ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
-	int				i;
-	int				neg;
-	long long int	ret;
+	unsigned int	i;
+	long			sign;
+	long			result;
 
-	ret = 0;
-	neg = 1;
 	i = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	sign = 1;
+	result = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 	{
-		if (str[i] == '-')
-			neg = -neg;
 		i++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
+	if (str[i] == '-')
 	{
-		ret = ret * 10 + (str[i] - 48);
+		sign = -1;
 		i++;
 	}
-	return (ret * neg);
+	else if (str[i] == '+')
+	i++;
+	while (str[i] != '\0' && str[i] >= '0' && str[i] <= '9')
+	{
+		result *= 10;
+		result += str[i] - '0';
+		i++;
+	}
+	return (result * sign);
 }

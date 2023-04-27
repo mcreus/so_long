@@ -1,37 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcreus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/27 12:42:17 by mcreus            #+#    #+#             */
-/*   Updated: 2023/04/27 12:42:18 by mcreus           ###   ########.fr       */
+/*   Created: 2023/04/27 12:41:09 by mcreus            #+#    #+#             */
+/*   Updated: 2023/04/27 12:41:11 by mcreus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*The strdup() function returns a pointer to a new string which is
-       a duplicate of the string s.  Memory for the new string is
-       obtained with malloc(3).*/
-
 #include "libft.h"
 
-char	*ft_strdup(const char *s1)
+void	ft_putnbr_fd(int n, int fd)
 {
-	char	*s1_copy;
-	size_t	len;
-	size_t	i;
-
-	len = ft_strlen(s1);
-	s1_copy = malloc((len + 1) * sizeof(char));
-	i = 0;
-	if (s1_copy == 0)
-		return (0);
-	while (i < len)
+	if (n == -2147483648)
+		ft_putstr_fd("-2147483648", fd);
+	else if (n < 0)
 	{
-		s1_copy[i] = s1[i];
-		i++;
+		ft_putchar_fd('-', fd);
+		ft_putnbr_fd(-n, fd);
 	}
-	s1_copy[i] = '\0';
-	return (s1_copy);
+	else if (n >= 10)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putchar_fd(n % 10 + '0', fd);
+	}
+	else
+		ft_putchar_fd(n + '0', fd);
 }

@@ -1,37 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcreus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/27 12:42:17 by mcreus            #+#    #+#             */
-/*   Updated: 2023/04/27 12:42:18 by mcreus           ###   ########.fr       */
+/*   Created: 2023/04/27 12:33:19 by mcreus            #+#    #+#             */
+/*   Updated: 2023/04/27 12:33:21 by mcreus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*The strdup() function returns a pointer to a new string which is
-       a duplicate of the string s.  Memory for the new string is
-       obtained with malloc(3).*/
+/*lst: The address of a pointer to the first link of
+a list.
+new: The address of a pointer to the node to be
+added to the list.
+Adds the node ’new’ at the end of the list*/
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s1)
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	char	*s1_copy;
-	size_t	len;
-	size_t	i;
-
-	len = ft_strlen(s1);
-	s1_copy = malloc((len + 1) * sizeof(char));
-	i = 0;
-	if (s1_copy == 0)
-		return (0);
-	while (i < len)
+	if (*lst == NULL)
 	{
-		s1_copy[i] = s1[i];
-		i++;
+		*lst = new;
+		return ;
 	}
-	s1_copy[i] = '\0';
-	return (s1_copy);
+	if (new == NULL)
+		return ;
+	ft_lstlast (*lst)-> next = new;
 }
